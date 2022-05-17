@@ -31,11 +31,11 @@ function saveRecord(record) {
   // open new transaction with database with read & write permission
   const transaction = db.transaction(["budget_tracker"], "readwrite");
 
-  // access the object store for 'budget_tracker'
-  const budgetObjectStore = transaction.objectStore("budget_tracker");
+  // access the object store for budget_tracker
+  const budgetTrackerObjStore = transaction.objectStore("budget_tracker");
 
   // add record to store
-  budgetObjectStore.add(record);
+  budgetTrackerObjStore.add(record);
 }
 
 function uploadBudget() {
@@ -43,10 +43,10 @@ function uploadBudget() {
   const transaction = db.transaction(["budget_tracker"], "readwrite");
 
   // access object store
-  const budgetObjectStore = transaction.objectStore("budget_tracker");
+  const budgetTrackerObjStore = transaction.objectStore("budget_tracker");
 
   // get all store records
-  const getAll = budgetObjectStore.getAll();
+  const getAll = budgetTrackerObjStore.getAll();
 
   // execute if getAll() is successfull
   getAll.onsuccess = function () {
@@ -69,10 +69,10 @@ function uploadBudget() {
           const transaction = db.transaction(["budget_tracker"], "readwrite");
 
           // access budget_tracker object store
-          const budgetObjectStore = transaction.objectStore("budget_tracker");
+          const budgetTrackerObjStore = transaction.objectStore("budget_tracker");
 
           // clear all items in your store
-          budgetObjectStore.clear();
+          budgetTrackerObjStore.clear();
           alert("All transactions have been submitted");
         })
         .catch((err) => {
@@ -82,5 +82,4 @@ function uploadBudget() {
   };
 }
 
-// listen for app 
 window.addEventListener("online", uploadBudget);
