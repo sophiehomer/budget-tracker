@@ -9,7 +9,7 @@ request.onupgradeneeded = function (event) {
   const db = event.target.result;
 
   // creates an object store
-  db.createObjectStore("budget_tracker", { autoIncrement: true });
+  db.createObjectStore("pending", { autoIncrement: true });
 };
 
 request.onsuccess = function (event) {
@@ -29,10 +29,10 @@ request.onerror = function (event) {
 // function will execute if attempting a new sumbission with no internet connection
 function saveRecord(record) {
   // open new transaction with database with read & write permission
-  const transaction = db.transaction(["budget_tracker"], "readwrite");
+  const transaction = db.transaction(["pending"], "readwrite");
 
   // access the object store for budget_tracker
-  const budgetTrackerObjStore = transaction.objectStore("budget_tracker");
+  const budgetTrackerObjStore = transaction.objectStore("pending");
 
   // add record to store
   budgetTrackerObjStore.add(record);
@@ -40,10 +40,10 @@ function saveRecord(record) {
 
 function uploadBudget() {
   // open a transaction on db
-  const transaction = db.transaction(["budget_tracker"], "readwrite");
+  const transaction = db.transaction(["pending"], "readwrite");
 
   // access object store
-  const budgetTrackerObjStore = transaction.objectStore("budget_tracker");
+  const budgetTrackerObjStore = transaction.objectStore("pending");
 
   // get all store records
   const getAll = budgetTrackerObjStore.getAll();
@@ -52,7 +52,7 @@ function uploadBudget() {
   getAll.onsuccess = function () {
     // fetch if data exists in store
     if (getAll.result.length > 0) {
-      fetch("/api/transaction", {
+      fetch("/api/transaction/bulk", {
         method: "POST",
         body: JSON.stringify(getAll.result),
         headers: {
@@ -66,10 +66,10 @@ function uploadBudget() {
             throw new Error(serverResponse);
           }
           // open on more transaction
-          const transaction = db.transaction(["budget_tracker"], "readwrite");
+          const transaction = db.transaction(["pending"], "readwrite");
 
           // access budget_tracker object store
-          const budgetTrackerObjStore = transaction.objectStore("budget_tracker");
+          const budgetTrackerObjStore = transaction.objectStore("pending");
 
           // clear all items in your store
           budgetTrackerObjStore.clear();
