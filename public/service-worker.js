@@ -29,29 +29,8 @@ self.addEventListener("install", function(event) {
       })
     );
   });
-  
-self.addEventListener('activate', (e) => {
-    e.waitUntil(
-        caches.keys().then(keyList => {
-            let cacheKeeplist = keyList.filter(key => {
-                return key.indexOf(APP_PREFIX);
-            });
 
-            cacheKeeplist.push(CACHE_NAME);
-
-            return Promise.all(
-                keyList.map((key, i) => {
-                    if (cacheKeeplist.indexOf(key) === -1) {
-                        console.log('deleting cache : ' + keyList[i]);
-                        return caches.delete(keyList[i]);
-                    }
-                })
-            )
-        })
-    )
-});
-
-self.addEventListener("fetch", function(event) {
+  self.addEventListener("fetch", function(event) {
     // cache all get requests to /api routes
     if (event.request.url.includes("/api/")) {
       event.respondWith(
@@ -86,5 +65,27 @@ self.addEventListener("fetch", function(event) {
         })
       );
 });
+  
+self.addEventListener('activate', (e) => {
+    e.waitUntil(
+        caches.keys().then(keyList => {
+            let cacheKeeplist = keyList.filter(key => {
+                return key.indexOf(APP_PREFIX);
+            });
+
+            cacheKeeplist.push(CACHE_NAME);
+
+            return Promise.all(
+                keyList.map((key, i) => {
+                    if (cacheKeeplist.indexOf(key) === -1) {
+                        console.log('deleting cache : ' + keyList[i]);
+                        return caches.delete(keyList[i]);
+                    }
+                })
+            )
+        })
+    )
+});
+
 
 
