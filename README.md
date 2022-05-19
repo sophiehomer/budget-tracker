@@ -17,7 +17,7 @@ npm install
 
 ## Usage
 Add an item and price and click add expense. To subtract an expense, add a name and total and click subtract expense.
-https://git.heroku.com/damp-atoll-37188.git
+https://damp-atoll-37188.herokuapp.com/
 
 ## Credits
 Sophie Homer
